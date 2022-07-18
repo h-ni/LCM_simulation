@@ -1,0 +1,47 @@
+
+
+
+
+model{
+
+
+
+for (j in 1:nr.pops) {
+
+
+p[j] ~ dbeta(1,1)
+
+#pop[j,1:4] ~ dmulti(par[j,1:4],n[j])
+pop[((j-1)*4+1):(j*4)] ~ dmulti(par[j,1:4], n[j])
+par[j,1] <- p[j]*Se1*Se2 + (1-p[j])*(1-Sp1)*(1-Sp2)
+par[j,2] <- p[j]*Se1*(1-Se2) + (1-p[j])*(1-Sp1)*Sp2
+par[j,3] <- p[j]*(1-Se1)*Se2 + (1-p[j])*Sp1*(1-Sp2)
+par[j,4] <- p[j]*(1-Se1)*(1-Se2) + (1-p[j])*Sp1*Sp2
+
+### the same as above ##
+#pop[((j-1)*4+1):(j*4)] ~ dmulti(par[((j-1)*4+1):(j*4)], n[j])
+#par[((j-1)*4+1)] <- p[j]*Se1*Se2 + (1-p[j])*(1-Sp1)*(1-Sp2)
+#par[((j-1)*4+2)] <- p[j]*Se1*(1-Se2) + (1-p[j])*(1-Sp1)*Sp2
+#par[((j-1)*4+3)] <- p[j]*(1-Se1)*Se2 + (1-p[j])*Sp1*(1-Sp2)
+#par[(j*4)] <- p[j]*(1-Se1)*(1-Se2) + (1-p[j])*Sp1*Sp2
+
+#n[j] <- sum(pop[((j-1)*4+1):(j*4)])
+
+
+}
+
+
+
+                  # priors
+
+                      Se1 ~ dbeta(1,1)  
+                      Sp1 ~ dbeta(1,1) 
+                      Se2 ~ dbeta(1,1)  
+                      Sp2 ~ dbeta(1,1)
+
+
+                      
+
+}
+
+
